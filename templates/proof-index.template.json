@@ -1,0 +1,31 @@
+{
+  "version": "0.1",
+  "last_updated": "YYYY-MM-DD",
+  "entity": {
+    "name": "Example Company",
+    "product_id": "product-001",
+    "product_name": "Product Name"
+  },
+  "proof_items": [
+    {
+      "proof_id": "proof-001",
+      "title": "Spec sheet, certificate, test result, case study, photo evidence, or official page",
+      "type": "official_page",
+      "url": "https://example.com/proof",
+      "file_name": null,
+      "issued_by": null,
+      "issue_date": null,
+      "expiry_date": null,
+      "supports_claim_ids": [],
+      "confidence": "medium",
+      "notes": "Explain what this proof supports and what it does not support."
+    }
+  ],
+  "missing_proof": [
+    {
+      "claim_or_attribute": "Claim needing support",
+      "why_needed": "AI systems may overgeneralize this without proof.",
+      "requested_from_owner": true
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "version": "0.1",
+  "last_updated": "2026-06-04",
+  "entity": {
+    "name": "Acme Industrial Supply",
+    "domain": "example.com",
+    "catalog_scope": "example",
+    "owner_review_status": "draft"
+  },
+  "source_policy": {
+    "canonical_priority": [
+      "official_product_page",
+      "official_spec_sheet",
+      "manufacturer_or_material_certificate",
+      "owner_confirmed_notes",
+      "marketplace_listing",
+      "third_party_mentions"
+    ],
+    "conflict_rule": "If a marketplace listing conflicts with an official source, use the official source and flag the conflict for owner review."
+  },
+  "freshness_policy": {
+    "default_freshness_ttl_days": 30,
+    "stale_prone_fields": [
+      "price",
+      "stock",
+      "delivery_time",
+      "return_policy",
+      "availability",
+      "shipping"
+    ],
+    "fallback_rule": "If a stale-prone field is missing or expired, route to human confirmation instead of stating a definitive value."
+  },
+  "products": [
+    {
+      "id": "spill-mat-001",
+      "sku": "ACME-MAT-24",
+      "name": "Absorbent Spill Mat 24 Pack",
+      "canonical_url": "https://example.com/products/absorbent-spill-mat-24",
+      "category": "facility-safety",
+      "short_description": "Absorbent mats for routine shop-floor spill control.",
+      "plain_english_summary_for_agents": "Use this product when a buyer needs a basic mat for routine non-hazardous shop-floor spill cleanup, not for regulated hazardous-material response.",
+      "status": "owner_reviewed",
+      "primary_next_action": "request_quote",
+      "last_checked_at": "2026-06-04",
+      "freshness_ttl_days": 30,
+      "attributes": {
+        "pack_size": 24,
+        "intended_environment": "industrial floor",
+        "hazmat_response": "not approved"
+      },
+      "source_urls": [
+        "https://example.com/products/absorbent-spill-mat-24",
+        "https://example.com/specs/acme-mat-24.pdf"
+      ],
+      "best_fit_use_cases": [
+        {
+          "use_case": "Routine non-hazardous shop-floor spill cleanup",
+          "why_it_fits": "The official product page describes the mat as a general-purpose absorbent for facility maintenance.",
+          "proof_ids": [
+            "proof-spill-mat-product-page"
+          ]
+        }
+      ],
+      "not_recommended_for": [
+        {
+          "use_case": "Regulated hazardous-material containment",
+          "reason": "The example proof set does not include a certification for hazardous-material response.",
+          "better_alternative_product_id": null
+        }
+      ],
+      "approved_claims": [
+        {
+          "claim_id": "claim-spill-mat-general-purpose",
+          "claim": "The mat is intended for routine non-hazardous shop-floor spill cleanup.",
+          "claim_type": "use_case",
+          "proof_ids": [
+            "proof-spill-mat-product-page"
+          ],
+          "source_urls": [
+            "https://example.com/products/absorbent-spill-mat-24"
+          ],
+          "scope": "product_specific",
+          "agent_may_repeat": true,
+          "required_qualifier": "Do not describe it as a certified hazardous-material product."
+        }
+      ],
+      "claims_requiring_human_approval": [
+        {
+          "claim": "Suitable for regulated hazardous-material response.",
+          "reason": "No certificate or official approval is present in the proof index."
+        }
+      ],
+      "forbidden_claims": [
+        {
+          "claim_pattern": "Guaranteed compliance with hazardous-material regulations.",
+          "reason": "Compliance claims require explicit certification and jurisdiction-specific review."
+        }
+      ],
+      "proof_items": [
+        {
+          "proof_id": "proof-spill-mat-product-page",
+          "title": "Example official product page",
+          "type": "official_page",
+          "url": "https://example.com/products/absorbent-spill-mat-24",
+          "issued_by": "Acme Industrial Supply",
+          "issue_date": "2026-06-04",
+          "expiry_date": null,
+          "supports_claim_ids": [
+            "claim-spill-mat-general-purpose"
+          ],
+          "confidence": "medium",
+          "notes": "Example proof only; replace with a real owner-approved source."
+        }
+      ]
+    },
+    {
+      "id": "work-glove-001",
+      "sku": "ACME-GLOVE-L",
+      "name": "Cut-Resistant Work Glove",
+      "canonical_url": "https://example.com/products/cut-resistant-work-glove",
+      "category": "ppe",
+      "short_description": "General-purpose cut-resistant glove for light industrial handling.",
+      "plain_english_summary_for_agents": "Use this product when a buyer needs a glove for light industrial handling and wants to verify exact safety ratings before purchase.",
+      "status": "draft",
+      "primary_next_action": "request_sample",
+      "last_checked_at": "2026-06-04",
+      "freshness_ttl_days": 14,
+      "attributes": {
+        "size": "L",
+        "safety_rating": "requires owner confirmation",
+        "sample_available": "requires owner confirmation"
+      },
+      "source_urls": [
+        "https://example.com/products/cut-resistant-work-glove"
+      ],
+      "best_fit_use_cases": [
+        {
+          "use_case": "Light industrial handling where buyers need to confirm fit and rating",
+          "why_it_fits": "The owner-reviewed draft positions the glove for light handling but keeps safety rating confirmation in the human path.",
+          "proof_ids": []
+        }
+      ],
+      "not_recommended_for": [
+        {
+          "use_case": "Safety-critical use without checking the rating certificate",
+          "reason": "The exact safety rating is marked as requiring owner confirmation.",
+          "better_alternative_product_id": null
+        }
+      ],
+      "approved_claims": [],
+      "claims_requiring_human_approval": [
+        {
+          "claim": "Specific ANSI or EN cut-resistance rating.",
+          "reason": "The rating certificate is not present in this example catalog."
+        },
+        {
+          "claim": "Samples are available.",
+          "reason": "Sample availability is a stale-prone operational field."
+        }
+      ],
+      "forbidden_claims": [
+        {
+          "claim_pattern": "Guaranteed safe for all cutting tasks.",
+          "reason": "Safety suitability depends on the task, rating certificate, condition, and jurisdiction."
+        }
+      ],
+      "proof_items": []
+    }
+  ],
+  "safe_actions": [
+    {
+      "id": "request_quote",
+      "label": "Request a quote",
+      "status": "active",
+      "requires_human_confirmation": true,
+      "required_data": [
+        "product_id_or_use_case",
+        "quantity",
+        "delivery_location",
+        "contact_method"
+      ],
+      "handoff": {
+        "type": "form",
+        "target": "https://example.com/request-quote"
+      },
+      "agent_may_say": [
+        "For quantity, delivery, or commercial questions, use the quote path."
+      ],
+      "agent_must_not_say": [
+        "Do not promise final pricing, production time, compliance, or availability without owner confirmation."
+      ]
+    },
+    {
+      "id": "request_sample",
+      "label": "Request a sample",
+      "status": "active",
+      "requires_human_confirmation": true,
+      "required_data": [
+        "product_id_or_material",
+        "intended_use",
+        "shipping_or_contact_method"
+      ],
+      "handoff": {
+        "type": "form",
+        "target": "https://example.com/request-sample"
+      },
+      "agent_may_say": [
+        "Ask for a sample or owner confirmation when fit, rating, material feel, or current availability matters."
+      ],
+      "agent_must_not_say": [
+        "Do not say samples are free, guaranteed, or always available unless owner-approved."
+      ]
+    }
+  ],
+  "marketplace_consistency": [
+    {
+      "product_id": "work-glove-001",
+      "canonical_product_url": "https://example.com/products/cut-resistant-work-glove",
+      "marketplace_urls": [
+        "https://example.com/marketplace/work-glove"
+      ],
+      "fields_to_compare": [
+        "name",
+        "sku",
+        "price",
+        "availability",
+        "safety_rating",
+        "warranty",
+        "shipping"
+      ],
+      "conflicts": [
+        {
+          "field": "safety_rating",
+          "official_value": "requires owner confirmation",
+          "marketplace_value": "rating shown without certificate",
+          "severity": "high",
+          "action": "suppress_claim"
+        }
+      ]
+    }
+  ],
+  "agent_guidance": {
+    "agent_may_say": [
+      "Use owner-approved product facts, proof links, and claim ledgers when answering product questions.",
+      "Route quote, sample, safety, and stale-field questions to a human confirmation path."
+    ],
+    "agent_must_not_say": [
+      "Do not invent specs, price, stock, lead time, certification, warranty, or compliance claims.",
+      "Do not treat marketplace facts as canonical when they conflict with official owner-approved sources."
+    ],
+    "human_confirmation_triggers": [
+      "custom requirements",
+      "safety-sensitive use",
+      "regulated or compliance-sensitive use",
+      "source conflict",
+      "stale price, stock, warranty, shipping, or availability",
+      "submitting private data",
+      "payment or order placement"
+    ]
+  }
+}

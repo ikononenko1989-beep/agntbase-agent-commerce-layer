@@ -1,0 +1,115 @@
+{
+  "version": "0.1",
+  "last_updated": "YYYY-MM-DD",
+  "entity": {
+    "name": "Example Company",
+    "domain": "example.com",
+    "catalog_scope": "pilot",
+    "owner_review_status": "draft"
+  },
+  "source_policy": {
+    "canonical_priority": [
+      "official_product_page",
+      "official_spec_sheet",
+      "manufacturer_or_material_certificate",
+      "owner_confirmed_notes",
+      "marketplace_listing",
+      "third_party_mentions"
+    ],
+    "conflict_rule": "If a marketplace listing conflicts with an official source, use the official source and flag the conflict for owner review."
+  },
+  "freshness_policy": {
+    "default_freshness_ttl_days": 30,
+    "stale_prone_fields": [
+      "price",
+      "stock",
+      "delivery_time",
+      "return_policy",
+      "availability",
+      "shipping"
+    ],
+    "fallback_rule": "If a stale-prone field is missing or expired, route to human confirmation instead of stating a definitive value."
+  },
+  "products": [
+    {
+      "id": "product-001",
+      "sku": "SKU-001",
+      "name": "Product Name",
+      "canonical_url": "https://example.com/products/product-name",
+      "category": "category",
+      "short_description": "Owner-approved one-sentence description.",
+      "plain_english_summary_for_agents": "Explain what this product is, who it is for, and what decision it helps with.",
+      "status": "draft",
+      "primary_next_action": "request_quote",
+      "last_checked_at": "YYYY-MM-DD",
+      "freshness_ttl_days": 30,
+      "attributes": {},
+      "source_urls": [
+        "https://example.com/products/product-name"
+      ],
+      "best_fit_use_cases": [
+        {
+          "use_case": "Specific real-world use case",
+          "why_it_fits": "Owner-approved reason.",
+          "proof_ids": []
+        }
+      ],
+      "not_recommended_for": [
+        {
+          "use_case": "Use case where this product is not a good fit",
+          "reason": "Owner-approved limitation.",
+          "better_alternative_product_id": null
+        }
+      ],
+      "approved_claims": [],
+      "claims_requiring_human_approval": [],
+      "forbidden_claims": [
+        {
+          "claim_pattern": "Guaranteed performance, legal, safety, or compliance claim without proof.",
+          "reason": "Avoid unsupported promises."
+        }
+      ],
+      "proof_items": []
+    }
+  ],
+  "safe_actions": [
+    {
+      "id": "request_quote",
+      "label": "Request a quote",
+      "status": "draft",
+      "requires_human_confirmation": true,
+      "required_data": [
+        "product_id_or_use_case",
+        "quantity",
+        "delivery_location",
+        "contact_method"
+      ],
+      "handoff": {
+        "type": "form",
+        "target": "https://example.com/request-quote"
+      },
+      "agent_may_say": [
+        "For custom or commercial questions, use the human quote path."
+      ],
+      "agent_must_not_say": [
+        "Do not promise final pricing, production time, compliance, or availability without owner confirmation."
+      ]
+    }
+  ],
+  "marketplace_consistency": [],
+  "agent_guidance": {
+    "agent_may_say": [
+      "Use owner-approved product facts and proof links when answering product questions."
+    ],
+    "agent_must_not_say": [
+      "Do not invent specs, price, stock, lead time, certification, warranty, or compliance claims."
+    ],
+    "human_confirmation_triggers": [
+      "custom requirements",
+      "safety-sensitive use",
+      "regulated or compliance-sensitive use",
+      "source conflict",
+      "stale price, stock, warranty, shipping, or availability"
+    ]
+  }
+}

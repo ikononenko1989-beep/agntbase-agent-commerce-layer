@@ -1,0 +1,25 @@
+{
+  "name": "agntbase-agent-commerce-layer",
+  "version": "0.1.0",
+  "description": "Open schema and starter kit for AI-readable product facts, claims, proof, and safe commerce actions.",
+  "type": "module",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "test": "npm run validate"
+  },
+  "keywords": [
+    "ai-agents",
+    "commerce",
+    "schema",
+    "json-schema",
+    "llms",
+    "trust",
+    "agentic-commerce"
+  ],
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}

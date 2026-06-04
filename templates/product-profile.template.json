@@ -1,0 +1,72 @@
+{
+  "version": "0.1",
+  "last_updated": "YYYY-MM-DD",
+  "product": {
+    "id": "product-001",
+    "sku": "SKU-001",
+    "name": "Product Name",
+    "canonical_url": "https://example.com/products/product-name",
+    "category": "category",
+    "short_description": "Owner-approved one-sentence description.",
+    "plain_english_summary_for_agents": "Explain what this product is, who it is for, and what decision it helps with.",
+    "status": "draft",
+    "last_checked_at": "YYYY-MM-DD",
+    "freshness_ttl_days": 30
+  },
+  "attributes": {
+    "material": "unknown",
+    "dimensions": null,
+    "available_options": [],
+    "certifications": [],
+    "indoor_outdoor": "unknown"
+  },
+  "best_fit_use_cases": [
+    {
+      "use_case": "Specific real-world use case",
+      "why_it_fits": "Owner-approved reason.",
+      "proof_ids": []
+    }
+  ],
+  "not_recommended_for": [
+    {
+      "use_case": "Use case where this product is not a good fit",
+      "reason": "Owner-approved limitation.",
+      "better_alternative_product_id": null
+    }
+  ],
+  "common_buyer_mistakes": [
+    {
+      "mistake": "Common mistake buyers make",
+      "correction": "Owner-approved correction."
+    }
+  ],
+  "internal_alternatives": [
+    {
+      "product_id": "product-002",
+      "when_to_choose_instead": "Condition where the alternative is better."
+    }
+  ],
+  "next_actions": [
+    {
+      "action_id": "request_quote",
+      "label": "Request a quote",
+      "url": "https://example.com/request-quote",
+      "requires_human_confirmation": true
+    }
+  ],
+  "price_stock_policy": {
+    "price_source_url": null,
+    "stock_source_url": null,
+    "price_last_checked_at": null,
+    "stock_last_checked_at": null,
+    "agent_rule": "If price or stock is not owner-confirmed and fresh, route to human confirmation instead of stating a definitive value."
+  },
+  "source_urls": [
+    "https://example.com/products/product-name"
+  ],
+  "owner_review": {
+    "reviewed_by": null,
+    "review_date": null,
+    "notes": "Do not publish externally until product facts are owner-reviewed."
+  }
+}

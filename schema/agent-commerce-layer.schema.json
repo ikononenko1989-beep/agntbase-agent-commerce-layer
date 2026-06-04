@@ -1,0 +1,619 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agntbase.dev/schemas/agent-commerce-layer.schema.json",
+  "title": "Agntbase Agent Commerce Layer",
+  "description": "A machine-readable layer for product facts, proof, claims, source priority, freshness, and safe commerce actions.",
+  "type": "object",
+  "required": [
+    "version",
+    "last_updated",
+    "entity",
+    "source_policy",
+    "freshness_policy",
+    "products",
+    "safe_actions",
+    "agent_guidance"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "last_updated": {
+      "$ref": "#/$defs/date"
+    },
+    "entity": {
+      "type": "object",
+      "required": [
+        "name",
+        "domain"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "catalog_scope": {
+          "type": "string"
+        },
+        "owner_review_status": {
+          "enum": [
+            "draft",
+            "owner_reviewed",
+            "published"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "source_policy": {
+      "type": "object",
+      "required": [
+        "canonical_priority",
+        "conflict_rule"
+      ],
+      "properties": {
+        "canonical_priority": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "official_product_page",
+              "official_spec_sheet",
+              "manufacturer_or_material_certificate",
+              "owner_confirmed_notes",
+              "marketplace_listing",
+              "third_party_mentions"
+            ]
+          }
+        },
+        "conflict_rule": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "freshness_policy": {
+      "type": "object",
+      "required": [
+        "default_freshness_ttl_days",
+        "stale_prone_fields",
+        "fallback_rule"
+      ],
+      "properties": {
+        "default_freshness_ttl_days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 365
+        },
+        "stale_prone_fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "fallback_rule": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "products": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/product"
+      }
+    },
+    "safe_actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/action"
+      }
+    },
+    "marketplace_consistency": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/marketplaceCheck"
+      }
+    },
+    "agent_guidance": {
+      "type": "object",
+      "required": [
+        "agent_may_say",
+        "agent_must_not_say",
+        "human_confirmation_triggers"
+      ],
+      "properties": {
+        "agent_may_say": {
+          "$ref": "#/$defs/stringList"
+        },
+        "agent_must_not_say": {
+          "$ref": "#/$defs/stringList"
+        },
+        "human_confirmation_triggers": {
+          "$ref": "#/$defs/stringList"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "stringList": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "uriList": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "proofItem": {
+      "type": "object",
+      "required": [
+        "proof_id",
+        "title",
+        "type",
+        "confidence"
+      ],
+      "properties": {
+        "proof_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "enum": [
+            "spec_sheet",
+            "certificate",
+            "third_party_test",
+            "official_page",
+            "case_study",
+            "installation_photo",
+            "manufacturer_document",
+            "owner_confirmation"
+          ]
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "issued_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "issue_date": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expiry_date": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "supports_claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "claim": {
+      "type": "object",
+      "required": [
+        "claim_id",
+        "claim",
+        "claim_type",
+        "agent_may_repeat"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim_type": {
+          "enum": [
+            "material",
+            "performance",
+            "use_case",
+            "certification",
+            "availability",
+            "warranty",
+            "compliance",
+            "pricing",
+            "shipping"
+          ]
+        },
+        "proof_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_urls": {
+          "$ref": "#/$defs/uriList"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "agent_may_repeat": {
+          "type": "boolean"
+        },
+        "required_qualifier": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "product": {
+      "type": "object",
+      "required": [
+        "id",
+        "sku",
+        "name",
+        "canonical_url",
+        "status",
+        "primary_next_action",
+        "last_checked_at",
+        "freshness_ttl_days",
+        "source_urls",
+        "best_fit_use_cases",
+        "not_recommended_for",
+        "approved_claims",
+        "claims_requiring_human_approval",
+        "forbidden_claims",
+        "proof_items"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sku": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "category": {
+          "type": "string"
+        },
+        "short_description": {
+          "type": "string"
+        },
+        "plain_english_summary_for_agents": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "owner_reviewed",
+            "published"
+          ]
+        },
+        "primary_next_action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "last_checked_at": {
+          "$ref": "#/$defs/date"
+        },
+        "freshness_ttl_days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 365
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "source_urls": {
+          "$ref": "#/$defs/uriList"
+        },
+        "best_fit_use_cases": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "use_case",
+              "why_it_fits"
+            ],
+            "properties": {
+              "use_case": {
+                "type": "string",
+                "minLength": 1
+              },
+              "why_it_fits": {
+                "type": "string",
+                "minLength": 1
+              },
+              "proof_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "not_recommended_for": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "use_case",
+              "reason"
+            ],
+            "properties": {
+              "use_case": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "better_alternative_product_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "approved_claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claim"
+          }
+        },
+        "claims_requiring_human_approval": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "claim",
+              "reason"
+            ],
+            "properties": {
+              "claim": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "forbidden_claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "claim_pattern",
+              "reason"
+            ],
+            "properties": {
+              "claim_pattern": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "proof_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/proofItem"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "action": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "status",
+        "requires_human_confirmation",
+        "handoff",
+        "agent_may_say",
+        "agent_must_not_say"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "active",
+            "disabled"
+          ]
+        },
+        "requires_human_confirmation": {
+          "type": "boolean"
+        },
+        "required_data": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "handoff": {
+          "type": "object",
+          "required": [
+            "type",
+            "target"
+          ],
+          "properties": {
+            "type": {
+              "enum": [
+                "website",
+                "email",
+                "form",
+                "api",
+                "internal_queue"
+              ]
+            },
+            "target": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": true
+        },
+        "agent_may_say": {
+          "$ref": "#/$defs/stringList"
+        },
+        "agent_must_not_say": {
+          "$ref": "#/$defs/stringList"
+        }
+      },
+      "additionalProperties": true
+    },
+    "marketplaceCheck": {
+      "type": "object",
+      "required": [
+        "product_id",
+        "canonical_product_url",
+        "fields_to_compare",
+        "conflicts"
+      ],
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_product_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "marketplace_urls": {
+          "$ref": "#/$defs/uriList"
+        },
+        "fields_to_compare": {
+          "$ref": "#/$defs/stringList"
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "field",
+              "severity",
+              "action"
+            ],
+            "properties": {
+              "field": {
+                "type": "string"
+              },
+              "official_value": {},
+              "marketplace_value": {},
+              "severity": {
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              },
+              "action": {
+                "enum": [
+                  "review",
+                  "update_marketplace",
+                  "update_official_source",
+                  "suppress_claim"
+                ]
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

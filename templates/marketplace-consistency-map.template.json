@@ -1,0 +1,54 @@
+{
+  "version": "0.1",
+  "last_updated": "YYYY-MM-DD",
+  "entity": {
+    "name": "Example Company",
+    "domain": "example.com"
+  },
+  "marketplaces": [
+    {
+      "platform": "Shopify",
+      "status": "unknown",
+      "url": null
+    },
+    {
+      "platform": "Amazon",
+      "status": "unknown",
+      "url": null
+    },
+    {
+      "platform": "eBay",
+      "status": "unknown",
+      "url": null
+    }
+  ],
+  "product_checks": [
+    {
+      "product_id": "product-001",
+      "canonical_product_url": "https://example.com/products/product-name",
+      "marketplace_urls": [],
+      "fields_to_compare": [
+        "name",
+        "sku",
+        "material",
+        "size",
+        "price",
+        "availability",
+        "warranty",
+        "certification_claims",
+        "shipping",
+        "return_policy"
+      ],
+      "conflicts": [
+        {
+          "field": "example",
+          "official_value": "owner-approved value",
+          "marketplace_value": "conflicting value",
+          "severity": "medium",
+          "action": "review"
+        }
+      ]
+    }
+  ],
+  "agent_rule": "If marketplace facts conflict with official owner-approved sources, agents should use the official source and flag the conflict for owner review."
+}

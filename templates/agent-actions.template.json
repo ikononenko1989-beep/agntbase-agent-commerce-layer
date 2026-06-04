@@ -1,0 +1,62 @@
+{
+  "version": "0.1",
+  "last_updated": "YYYY-MM-DD",
+  "entity": {
+    "name": "Example Company",
+    "domain": "example.com"
+  },
+  "status": "draft_for_owner_review",
+  "actions": [
+    {
+      "id": "request_quote",
+      "label": "Request a quote",
+      "status": "draft",
+      "requires_human_confirmation": true,
+      "required_data": [
+        "product_id_or_use_case",
+        "quantity",
+        "delivery_location",
+        "contact_method"
+      ],
+      "handoff": {
+        "type": "form",
+        "target": "https://example.com/request-quote"
+      },
+      "agent_may_say": [
+        "For custom, commercial, or stale-field questions, use the human quote path."
+      ],
+      "agent_must_not_say": [
+        "Do not promise final pricing, production time, compliance, or availability without owner confirmation."
+      ]
+    },
+    {
+      "id": "request_sample",
+      "label": "Request a sample",
+      "status": "draft",
+      "requires_human_confirmation": true,
+      "required_data": [
+        "product_id_or_material",
+        "intended_use",
+        "shipping_or_contact_method"
+      ],
+      "handoff": {
+        "type": "form",
+        "target": "https://example.com/request-sample"
+      },
+      "agent_may_say": [
+        "If material, fit, color, or physical characteristics matter, ask a human about samples before purchase."
+      ],
+      "agent_must_not_say": [
+        "Do not say samples are free or always available unless owner-approved."
+      ]
+    }
+  ],
+  "forbidden_actions": [
+    "complete_payment",
+    "place_order_without_human_confirmation",
+    "approve_compliance_or_safety_use",
+    "change_product_specs",
+    "invent_price_or_availability",
+    "submit_private_data_without_user_confirmation"
+  ]
+}
